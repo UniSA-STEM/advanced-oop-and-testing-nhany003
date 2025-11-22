@@ -2,14 +2,30 @@
 File: filename.py
 Description: A brief description of this Python module.
 Author: Nenciliae Nhanga
-ID: 110100110
+ID: 110424563
 Username: nhany003
 This is my own work as defined by the University's Academic Integrity Policy.
 '''
 
-
 from datetime import datetime
 from typing import List, Dict, Optional
+
+
+class HealthRecord:
+    def __init__(self, description: str, severity, treatment_plan: str = ""):
+        self.description = description
+        self.date_reported = datetime.now()
+        self.severity = severity
+        self.treatment_plan = treatment_plan
+        self.resolved = False
+
+    def mark_resolved(self):
+        self.resolved = True
+
+    def __str__(self):
+        status = "Resolved" if self.resolved else "Active"
+        return f"[{status}] {self.severity.value} - {self.description} (Reported: {self.date_reported.strftime('%Y-%m-%d')})"
+
 
 class Animal:
 
@@ -21,7 +37,7 @@ class Animal:
         self.__health_records = []
         self.__enclosure = None
 
-#getters
+    #getters
     def get_name(self):
         return self.__name
 
@@ -40,7 +56,7 @@ class Animal:
     def get_enclosure(self):
         return self.__enclosure
 
-#setters
+    # setters
     def set_name(self, name):
         self.__name = name
 
@@ -53,7 +69,10 @@ class Animal:
     def set_enclosure(self, enclosure):
         self.__enclosure = enclosure
 
-    #core methods
+    def add_health_record(self, record):
+        self.__health_records.append(record)
+
+    # core methods
     def make_sound(self):
         return "Generic animal sound"
 
@@ -63,7 +82,8 @@ class Animal:
     def sleep(self):
         return f"{self.__name} is sleeping"
 
-#Mammal subclass
+
+# Mammal subclass
 class Mammal(Animal):
     def __init__(self, name, species, age, dietary_needs, environment):
         super().__init__(name, species, age, dietary_needs)

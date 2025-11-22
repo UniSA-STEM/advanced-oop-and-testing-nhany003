@@ -2,13 +2,13 @@
 File: filename.py
 Description: A brief description of this Python module.
 Author: Nenciliae Nhanga
-ID: 110100110
+ID: 110424563
 Username: nhany003
 This is my own work as defined by the University's Academic Integrity Policy.
 '''
 
 class Enclosure:
-    def __init__(self, name, size, environment_type, capacity):
+    def __init__(self, name, size, environment_type,  capacity):
         self.__name = name
         self.__size = size
         self.__environment_type = environment_type
