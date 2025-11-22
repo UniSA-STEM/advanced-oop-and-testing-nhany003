@@ -8,23 +8,49 @@ This is my own work as defined by the University's Academic Integrity Policy.
 '''
 
 from datetime import datetime
-from typing import List, Dict, Optional
+from typing import List
 
 
 class HealthRecord:
-    def __init__(self, description: str, severity, treatment_plan: str = ""):
-        self.description = description
-        self.date_reported = datetime.now()
-        self.severity = severity
-        self.treatment_plan = treatment_plan
-        self.resolved = False
+    def __init__(self, description, severity, treatment_plan, date_reported):
+        self.__description = description
+        self.__date_reported = date_reported
+        self.__severity = severity
+        self.__treatment_plan = treatment_plan
+        self.__resolved = False
 
-    def mark_resolved(self):
-        self.resolved = True
+    """ Set to private to ensure all data entered is vaild"""
+
+    @property
+    def description(self):
+        return self.__description
+
+    @property
+    def date_reported(self):
+        return self.__date_reported
+
+    @property
+    def severity(self):
+        return self.__severity
+
+    @property
+    def treatment_plan(self):
+        return self.__treatment_plan
+
+    @property
+    def resolved(self):
+        return self.__resolved
+
+    def resolve(self):
+        self.__resolved = True
+
+    def update_treatment(self, new_plan):
+        self.__treatment_plan = new_plan
 
     def __str__(self):
         status = "Resolved" if self.resolved else "Active"
-        return f"[{status}] {self.severity.value} - {self.description} (Reported: {self.date_reported.strftime('%Y-%m-%d')})"
+        return (f"[{status}] {self.severity.value} - {self.description} "
+                f"(Reported: {self.date_reported.strftime('%Y-%m-%d')})")
 
 
 class Animal:
@@ -37,7 +63,7 @@ class Animal:
         self.__health_records = []
         self.__enclosure = None
 
-    #getters
+    # getters
     def get_name(self):
         return self.__name
 
