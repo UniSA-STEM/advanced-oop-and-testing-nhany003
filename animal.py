@@ -158,12 +158,14 @@ class Animal:
 
     # Health Management
     def add_health_record(self, record: HealthRecord):
-        """
-        Add a new health record and update treatment status.
-        """
+        """Add a new health record and update treatment status."""
         self.__health_records.append(record)
         # Automatically update treatment status
         self.__update_treatment_status()
+
+    def has_active_health_issues(self):
+        """return true if any health record is not resolved."""
+        return any(not record.resolved for record in self.__health_records)
 
     def __update_treatment_status(self):
         """Check if any health record is still active (not resolved)"""
