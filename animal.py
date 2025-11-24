@@ -49,7 +49,8 @@ class HealthRecord:
 
     def __str__(self):
         status = "Resolved" if self.resolved else "Active"
-        return (f"[{status}] {self.severity.value} - {self.description} "
+        sev = self.severity.value if hasattr(self.severity, "value") else self.severity
+        return (f"[{status}] {sev} - {self.description} "
                 f"(Reported: {self.date_reported.strftime('%Y-%m-%d')})")
 
 
@@ -92,7 +93,9 @@ class Animal:
     def under_treatment(self):
         return self.__under_treatment
 
-    # SETTERS - Controlled way to modify attributes
+    # --------------------
+    # Setters
+    # --------------------
 
     @name.setter
     def name(self, name):
@@ -114,10 +117,9 @@ class Animal:
 
     @enclosure.setter
     def enclosure(self, enclosure):
+        """Assign animal to an enclosure.
+        Validates that the animal can be moved and the enclosure is suitable.
         """
-                Assign animal to an enclosure.
-                Validates that the animal can be moved and the enclosure is suitable.
-                """
         # Allow setting to None (removing from enclosure)
         if enclosure is None:
             self.__enclosure = None
@@ -130,19 +132,21 @@ class Animal:
                 f"Cannot move {self.__name} to enclosure: animal is currently under treatment. "
             )
         # Check if enclosure has capacity
-        if hasattr(enclosure, 'is_at_capacity') and enclosure.capacity():
-            raise ValueError(f"Cannot assign {self.__name}: enclosure is at maximum capacity")
+        if enclosure.is_at_capacity:
+            raise ValueError(f"Cannot assign {self.__name}: enclosure is at capacity.")
 
         # Check if enclosure is suitable for species
-        if hasattr(enclosure, 'is_suitable_for') and not enclosure.allowed_species(self.__species):
+        if enclosure.allowed_species is not None and enclosure.allowed_species != self.__species:
             raise ValueError(
-                f"Enclosure is not suitable for species: {self.__species}. "
+                f"Enclosure already houses species: {enclosure.allowed_species}."
             )
 
         # If all validations pass, assign the enclosure
         self.__enclosure = enclosure
 
-    # Core Methods
+    # ----------------------
+    # Core methods
+    # ----------------------
     def make_sound(self):
         return f"{self.__name} the {self.__species} is making a sound"
 
@@ -153,7 +157,7 @@ class Animal:
         return f"{self.__name} is sleeping"
 
     # Health Management
-    def add_health_record(self, record):
+    def add_health_record(self, record: HealthRecord):
         """
         Add a new health record and update treatment status.
         """
@@ -162,25 +166,16 @@ class Animal:
         self.__update_treatment_status()
 
     def __update_treatment_status(self):
-        """
-        Private method to update under_treatment flag based on active health records.
-        Called automatically when health records are added or resolved.
-        This ensures under_treatment always reflects the actual health status.
-        """
-        # Check if any health record is still active (not resolved)
+        """Check if any health record is still active (not resolved)"""
         self.__under_treatment = any(not record.resolved for record in self.__health_records)
 
     def can_be_moved(self):
-        """
-        Check if animal can be moved between enclosures.
-        Animals under treatment should not be moved.
-        """
+        """Check if animal can be moved between enclosures.
+        Animals under treatment should not be moved."""
         return not self.__under_treatment
 
     def generate_health_report(self):
-        """
-        Generate a comprehensive health report for this animal.
-        """
+        """create a detailed health report for this animal."""
         report = f"Health Report for {self.__name} ({self.__species})\n"
         report += f"Age: {self.__age} years\n"
         report += f"Dietary Needs: {self.__dietary_needs}\n"
