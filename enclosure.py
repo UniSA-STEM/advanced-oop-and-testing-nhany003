@@ -77,7 +77,8 @@ class Enclosure:
 
     @property
     def needs_cleaning(self):
-        return self.__cleanliness_level < 70
+        """ check if enclosure needs cleaning"""
+        return self.__cleanliness_level < 60
 
     # --------------------
     # Enclosure suitability
@@ -142,12 +143,14 @@ class Enclosure:
         self.__cleanliness_level = min(100, self.__cleanliness_level + amount)
 
     def degrade_cleanliness(self, amount=5):
+        """reducing the cleanliness"""
         self.__cleanliness_level = max(0, self.__cleanliness_level - amount)
 
     # --------------------
     # Info
     # --------------------
     def get_status(self):
+        """ get current status of the enclosure"""
         status = f"Enclosure: {self.__name}\n"
         status += f"  Environment: {self.__environment_type}\n"
         status += f"  Size: {self.__size}m²\n"
@@ -159,6 +162,7 @@ class Enclosure:
         return status
 
     def list_animals(self):
+        """list all animals in the enclosure"""
         return self.__animals
 
     def __str__(self):
