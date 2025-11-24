@@ -1,6 +1,7 @@
 '''
-File: filename.py
-Description: A brief description of this Python module.
+File: animal.py
+Description: This python module creates animals, defines their characteristics and
+also creates a health record and management .
 Author: Nenciliae Nhanga
 ID: 110424563
 Username: nhany003
@@ -9,6 +10,14 @@ This is my own work as defined by the University's Academic Integrity Policy.
 
 from datetime import date
 from typing import List
+from enum import Enum
+
+
+class Severity(Enum):
+    LOW = "Low"
+    MEDIUM = "Medium"
+    HIGH = "High"
+    CRITICAL = "Critical"
 
 
 class HealthRecord:
@@ -40,9 +49,6 @@ class HealthRecord:
     @property
     def resolved(self):
         return self.__resolved
-
-    def resolve(self):
-        self.__resolved = True
 
     def update_treatment(self, new_plan):
         self.__treatment_plan = new_plan
@@ -138,7 +144,7 @@ class Animal:
         # Check if enclosure is suitable for species
         if enclosure.allowed_species is not None and enclosure.allowed_species != self.__species:
             raise ValueError(
-                f"Enclosure already houses species: {enclosure.allowed_species}."
+                f"Enclosure houses species: {enclosure.allowed_species}."
             )
 
         # If all validations pass, assign the enclosure
@@ -196,7 +202,7 @@ class Mammal(Animal):
         super().__init__(name, species, age, dietary_needs)
 
     def make_sound(self):
-        return f"{self.name()} makes a mammal sound"
+        return f"{self.name} makes a mammal sound"
 
 
 # Reptile subclass
@@ -206,7 +212,7 @@ class Reptile(Animal):
         self.__is_venomous = is_venomous
 
     def make_sound(self):
-        return f"{self.name()} makes a reptile sound"
+        return f"{self.name} makes a reptile sound"
 
     @property
     def is_venomous(self):
@@ -224,4 +230,4 @@ class Bird(Animal):
         return self.__can_fly
 
     def make_sound(self):
-        return f"{self.name()} makes a bird sound"
+        return f"{self.name} makes a bird sound"

@@ -1,6 +1,7 @@
 '''
-File: filename.py
-Description: A brief description of this Python module.
+File: staff.py
+Description: This oython module handles the creation of staff and their roles
+as well as assigning an animal and enclosure.
 Author: Nenciliae Nhanga
 ID: 110424563
 Username: nhany003
@@ -53,7 +54,7 @@ class Staff:
 
     def __str__(self):
         return (
-            f"{self.__name} ({self.get_role()}) - ID: {self.__employee_id}/n"
+            f"{self.__name} ({self.get_role()}) - ID: {self.__employee_id}\n"
             f"Assigned Animals: {len(self.__assigned_animals)} | "
             f"Assigned Enclosures: {len(self.__assigned_enclosures)}"
         )
@@ -71,12 +72,12 @@ class Zookeeper(Staff):
     def feed_animal(self, animal):
         """feed an assigned animal"""
         if (animal in self.assigned_animals or
-                animal.get_enclosure() in self.assigned_enclosures):
+                animal.enclosure in self.assigned_enclosures):
             return (
-                f"{self.name} fed {animal.name()}."
+                f"{self.name} fed {animal.name}."
                 f"Result: {animal.eat()}"
             )
-        return f"{self.name} is not assigned to {animal.name()}"
+        return f"{self.name} is not assigned to {animal.name}"
 
     def clean_enclosure(self, enclosure):
         """clean an assigned enclosure"""
@@ -107,25 +108,25 @@ class Veterinarian(Staff):
                 else "is healthy"
             )
             return (
-                f"{self.name} examined {animal.name()}. "
-                f"{animal.name()} {status}."
+                f"{self.name} examined {animal.name}. "
+                f"{animal.name} {status}."
             )
-        return f"{self.name} is not assigned to {animal.name()}"
+        return f"{self.name} is not assigned to {animal.name}"
 
     def treat_animal(self, animal, record):
         """Treat an animal for a health issue"""
         if animal not in self.assigned_animals:
-            return f"{self.name} is not assigned to {animal.name()}"
+            return f"{self.name} is not assigned to {animal.name}"
 
-        if record not in animal.health_records():
-            return f"Record not found for {animal.name()}"
+        if record not in animal.health_records:
+            return f"Record not found for {animal.name}"
 
-        if record.resolve:
+        if record.resolved:
             return f"This issue is already resolved."
 
             # Resolve the issue
-        record.resolve()
+        record.resolved()
         return (
-            f"{self.name} treated {animal.name()} for: "
-            f"{record.description()}"
+            f"{self.name} treated {animal.name} for: "
+            f"{record.description}"
         )

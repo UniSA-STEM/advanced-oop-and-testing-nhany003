@@ -1,3 +1,12 @@
+'''
+File: enclosure.py
+Description: This Python module showcase the environments of which the animals will be housed .
+Author: Nenciliae Nhanga
+ID: 110424563
+Username: nhany003
+This is my own work as defined by the University's Academic Integrity Policy.
+'''
+
 from typing import List
 from animal import Animal
 
@@ -95,9 +104,6 @@ class Enclosure:
         if len(self.__animals) >= self.__capacity:
             return False, "Enclosure is at full capacity"
 
-        if animal.environment_type != self.__environment_type:
-            return False, "Environment mismatch"
-
         if self.__allowed_species is None:
             return True, "OK"
 
@@ -114,7 +120,7 @@ class Enclosure:
             return False
 
         self.__animals.append(animal)
-        animal.set_enclosure(self)
+        animal.enclosure = self
 
         if self.__allowed_species is None:
             self.__allowed_species = animal.species
@@ -127,7 +133,7 @@ class Enclosure:
     def remove_animal(self, animal):
         if animal in self.__animals:
             self.__animals.remove(animal)
-            animal.set_enclosure(None)
+            animal.enclosure = None
 
             # Reset allowed species if now empty
             if len(self.__animals) == 0:
